@@ -1,6 +1,6 @@
 package nl.kristalsoftware.datastore.base.eventstore;
 
-import nl.kristalsoftware.datastore.base.eventstore.event.BaseEventEntity;
+import nl.kristalsoftware.datastore.base.eventstore.event.entity.BaseEventEntity;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.UUID;

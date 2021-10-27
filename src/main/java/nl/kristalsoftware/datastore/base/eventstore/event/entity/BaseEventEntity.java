@@ -1,4 +1,4 @@
-package nl.kristalsoftware.datastore.base.eventstore.event;
+package nl.kristalsoftware.datastore.base.eventstore.event.entity;
 
 import lombok.AccessLevel;
 import lombok.Data;
