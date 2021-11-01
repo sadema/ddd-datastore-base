@@ -38,8 +38,12 @@ public abstract class BaseEventEntity {
         this.domainEventName = domainEventName;
     }
 
-    public LocalDate getLocalDateFromMillis(Long date) {
+    public static LocalDate getLocalDateFromMillis(Long date) {
         Instant instant = Instant.ofEpochMilli(date);
+        return LocalDate.ofInstant(instant, ZoneId.systemDefault());
+    }
+
+    public static LocalDate getLocalDateFromInstant(Instant instant) {
         return LocalDate.ofInstant(instant, ZoneId.systemDefault());
     }
 
