@@ -30,9 +30,11 @@ public abstract class BaseEventStore<T extends Aggregate> {
     }
 
     private List<BaseEventEntity> getEvents(T aggregateRoot) {
-         return StreamSupport.stream(
+        List<BaseEventEntity> eventEntities = StreamSupport.stream(
                 findAllByReference(aggregateRoot).spliterator(), false)
                     .collect(Collectors.toList());
+        aggregateRoot.setNumberOfEntities(eventEntities.size());
+        return eventEntities;
     }
 
     protected void loadEvents(T aggregateRoot) {
