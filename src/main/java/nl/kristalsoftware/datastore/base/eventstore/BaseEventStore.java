@@ -3,7 +3,7 @@ package nl.kristalsoftware.datastore.base.eventstore;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import nl.kristalsoftware.datastore.base.eventstore.event.EventLoader;
-import nl.kristalsoftware.datastore.base.eventstore.event.entity.BaseEventEntity;
+import nl.kristalsoftware.datastore.base.eventstore.event.entity.UUIDBaseEventEntity;
 import nl.kristalsoftware.domain.base.Aggregate;
 import org.springframework.context.ApplicationEventPublisher;
 
@@ -20,7 +20,7 @@ public abstract class BaseEventStore<T extends Aggregate> {
 
     private final List<EventLoader> loaders;
 
-    protected Map<Class<? extends BaseEventEntity>, EventLoader> eventLoaderMap = new HashMap<>();
+    protected Map<Class<? extends UUIDBaseEventEntity>, EventLoader> eventLoaderMap = new HashMap<>();
 
     @PostConstruct
     public void init() {
@@ -29,32 +29,32 @@ public abstract class BaseEventStore<T extends Aggregate> {
         }
     }
 
-    private List<BaseEventEntity> getEvents(T aggregateRoot) {
+    private List<UUIDBaseEventEntity> getEvents(T aggregateRoot) {
          return StreamSupport.stream(
                 findAllByReference(aggregateRoot).spliterator(), false)
                     .collect(Collectors.toList());
     }
 
     protected void loadEvents(T aggregateRoot) {
-        List<BaseEventEntity> events = getEvents(aggregateRoot);
-        for (BaseEventEntity event : events) {
+        List<UUIDBaseEventEntity> events = getEvents(aggregateRoot);
+        for (UUIDBaseEventEntity event : events) {
             eventLoaderMap.get(event.getClass()).loadEventData(aggregateRoot, event);
         }
     }
 
     protected T loadEvents(UUID reference, ApplicationEventPublisher applicationEventPublisher) {
         T aggregateRoot = createAggregateRoot(reference, applicationEventPublisher);
-        List<BaseEventEntity> events = getEvents(aggregateRoot);
-        for (BaseEventEntity event : events) {
+        List<UUIDBaseEventEntity> events = getEvents(aggregateRoot);
+        for (UUIDBaseEventEntity event : events) {
             eventLoaderMap.get(event.getClass()).loadEventData(aggregateRoot, event);
         }
         return aggregateRoot;
     }
 
 
-    protected abstract Iterable<BaseEventEntity> findAllByReference(T aggregateRoot);
+    protected abstract Iterable<UUIDBaseEventEntity> findAllByReference(T aggregateRoot);
 
     protected abstract T createAggregateRoot(UUID reference, ApplicationEventPublisher applicationEventPublisher);
 
-    public abstract <V extends BaseEventEntity> void saveEventEntity(V eventEntity);
+    public abstract <V extends UUIDBaseEventEntity> void saveEventEntity(V eventEntity);
 }

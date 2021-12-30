@@ -1,11 +1,13 @@
 package nl.kristalsoftware.datastore.base.viewstore;
 
+import lombok.Getter;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 public class BaseCouchDBViewStore<T> {
 
+    @Getter
     private final RestTemplate restTemplate;
 
     protected BaseCouchDBViewStore(RestTemplate restTemplate) {
