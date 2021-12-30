@@ -1,4 +1,4 @@
-package nl.kristalsoftware.datastore.base.eventstore.event;
+package nl.kristalsoftware.datastore.base.eventstore.event.entity;
 
 import lombok.AccessLevel;
 import lombok.Data;
@@ -12,16 +12,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.UUID;
 
 @NoArgsConstructor
 @Data
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class BaseEventEntity {
+public abstract class UUIDBaseEventEntity implements BaseEventEntityName {
 
     @Setter(AccessLevel.NONE)
     @Id
@@ -33,14 +30,9 @@ public abstract class BaseEventEntity {
 
     private String domainEventName;
 
-    public BaseEventEntity(UUID reference, String domainEventName) {
+    public UUIDBaseEventEntity(UUID reference, String domainEventName) {
         this.reference = reference;
         this.domainEventName = domainEventName;
-    }
-
-    public LocalDate getLocalDateFromMillis(Long date) {
-        Instant instant = Instant.ofEpochMilli(date);
-        return LocalDate.ofInstant(instant, ZoneId.systemDefault());
     }
 
 }
